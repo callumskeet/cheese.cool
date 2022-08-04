@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <link rel="manifest" href="manifest.json" />
+    <link rel="shortcut icon" href="assets/favicon/favicon.ico" />
+    <link
+      rel="icon"
+      sizes="16x16 32x32 64x64"
+      href="assets/favicon/favicon.ico"
+    />
+    <link
+      rel="icon"
+      type="image/png"
+      sizes="196x196"
+      href="assets/favicon/favicon-192.png"
+    />
+    <link
+      rel="icon"
+      type="image/png"
+      sizes="160x160"
+      href="assets/favicon/favicon-160.png"
+    />
+    <link
+      rel="icon"
+      type="image/png"
+      sizes="96x96"
+      href="assets/favicon/favicon-96.png"
+    />
+    <link
+      rel="icon"
+      type="image/png"
+      sizes="64x64"
+      href="assets/favicon/favicon-64.png"
+    />
+    <link
+      rel="icon"
+      type="image/png"
+      sizes="32x32"
+      href="assets/favicon/favicon-32.png"
+    />
+    <link
+      rel="icon"
+      type="image/png"
+      sizes="16x16"
+      href="assets/favicon/favicon-16.png"
+    />
+    <link rel="apple-touch-icon" href="assets/favicon/favicon-57.png" />
+    <link
+      rel="apple-touch-icon"
+      sizes="114x114"
+      href="assets/favicon/favicon-114.png"
+    />
+    <link
+      rel="apple-touch-icon"
+      sizes="72x72"
+      href="assets/favicon/favicon-72.png"
+    />
+    <link
+      rel="apple-touch-icon"
+      sizes="144x144"
+      href="assets/favicon/favicon-144.png"
+    />
+    <link
+      rel="apple-touch-icon"
+      sizes="60x60"
+      href="assets/favicon/favicon-60.png"
+    />
+    <link
+      rel="apple-touch-icon"
+      sizes="120x120"
+      href="assets/favicon/favicon-120.png"
+    />
+    <link
+      rel="apple-touch-icon"
+      sizes="76x76"
+      href="assets/favicon/favicon-76.png"
+    />
+    <link
+      rel="apple-touch-icon"
+      sizes="152x152"
+      href="assets/favicon/favicon-152.png"
+    />
+    <link
+      rel="apple-touch-icon"
+      sizes="180x180"
+      href="assets/favicon/favicon-180.png"
+    />
+    <meta name="msapplication-TileColor" content="#000000" />
+    <meta
+      name="msapplication-TileImage"
+      content="assets/favicon/favicon-144.png"
+    />
+    <meta
+      name="msapplication-config"
+      content="assets/favicon/browserconfig.xml"
+    />
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" content="black" />
+    <meta
+      name="description"
+      content="That's it cheese! We'll go somewhere where there's cheese!"
+    />
+    <title>cheese</title>
+    <style>
+      html {
+        background: black;
+      }
+      main {
+        margin: 0;
+        height: 100%;
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: url('assets/cheese/cheese.webp') 50% 50% no-repeat;
+        background-size: cover;
+      }
+    </style>
+    <link
+      rel="preload"
+      as="image"
+      href="assets/cheese/cheese.webp"
+      type="image/webp"
+    />
+    <script type="text/javascript" defer>
+      ;(async () => {
+        if ('serviceWorker' in navigator) {
+          try {
+            let registration = await navigator.serviceWorker.register('sw.js')
+            console.info('Service worker registered')
+          } catch (error) {
+            console.error(
+              'Error while registering service worker: ' + error.message
+            )
+          }
+        }
+      })()
+    </script>
+    <script type="text/javascript" defer>
+      let source
+      let buffer
+      let context = new AudioContext()
+
+      ;(() => {
+        let fetchAudio = async (delay, retries) => {
+          try {
+            let res = await fetch('assets/cheese/cheese.mp3')
+            let audioData = await res.arrayBuffer()
+            buffer = await context.decodeAudioData(audioData)
+          } catch (error) {
+            if (retries > 0) {
+              await wait(delay)
+              _fetchAudio(2 ** delay * 10, retries - 1)
+            }
+          }
+        }
+        fetchAudio(10, 3)
+      })()
+
+      document.addEventListener('click', function () {
+        source = context.createBufferSource()
+        source.buffer = buffer
+        source.connect(context.destination)
+        source.start()
+      })
+
+      async function wait(ms) {
+        return new Promise((resolve) => setTimeout(resolve, ms))
+      }
+    </script>
+  </head>
+  <body>
+    <main></main>
+  </body>
+</html>
