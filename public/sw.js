@@ -5,6 +5,7 @@ const OFFLINE_MEDIA = [
   'manifest.json',
   '/',
   '/index.html',
+  '/main.js',
   '/assets/cheese/',
   '/assets/cheese/cheese.mp3',
   '/assets/cheese/cheese.webp',
